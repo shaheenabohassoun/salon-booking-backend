@@ -14,10 +14,10 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction --no-script
 COPY . .
 RUN mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views storage/logs bootstrap/cache \
   && chmod -R 775 storage bootstrap/cache \
+  && chmod +x docker-entrypoint.sh \
   && php artisan package:discover --ansi || true
 
 ENV PORT=8000
 EXPOSE 8000
 
-CMD php artisan migrate:fresh --seed --force \
-  && php artisan serve --host=0.0.0.0 --port=${PORT}
+CMD ["./docker-entrypoint.sh"]

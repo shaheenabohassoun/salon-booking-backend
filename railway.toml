@@ -1,0 +1,17 @@
+# https://nixpacks.com/docs/providers/php
+[phases.setup]
+nixPkgs = ["php83", "php83Packages.composer", "nodejs_20"]
+
+[phases.install]
+cmds = ["composer install --no-dev --optimize-autoloader", "php artisan package:discover --ansi"]
+
+[phases.build]
+cmds = [
+  "mkdir -p storage/framework/{cache,sessions,views} storage/logs bootstrap/cache",
+  "chmod -R 775 storage bootstrap/cache",
+  "php artisan config:cache",
+  "php artisan route:cache"
+]
+
+[start]
+cmd = "php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=${PORT:-8000}"

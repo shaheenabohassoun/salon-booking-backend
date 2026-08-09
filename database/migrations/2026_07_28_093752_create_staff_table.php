@@ -25,14 +25,6 @@ return new class extends Migration
             $table->unsignedInteger('sort_order')->default(0);
             $table->timestamps();
         });
-
-        Schema::create('salon_service_staff', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('salon_service_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('staff_id')->constrained()->cascadeOnDelete();
-            $table->timestamps();
-            $table->unique(['salon_service_id', 'staff_id']);
-        });
     }
 
     /**
@@ -40,7 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('salon_service_staff');
         Schema::dropIfExists('staff');
     }
 };
